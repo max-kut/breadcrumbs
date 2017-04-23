@@ -26,39 +26,42 @@ class Breadcrumbs {
     protected function getHtml($data, $template=false)
     {
 
+        $template = !empty($template)
+            ? $template
+            : config('breadcrumbs.template');
+
         $host = Request::server('REQUEST_SCHEME') . '://' . Request::getHost();
 
         $breadcrumbs = array();
+
         $i = 0;
+        if(config('breadcrumbs.first.enable') === true) {
+            $breadcrumbs[0]['link'] = $host;
+            $breadcrumbs[0]['title'] = !empty(config('breadcrumbs.first.content'))
+                ? config('breadcrumbs.first.content')
+                : 'Home';
+            $breadcrumbs[0]['class'] = !empty(config('breadcrumbs.first.class'))
+                ? config('breadcrumbs.first.class')
+                : '';
+            $i = 1;
+        }
+
         foreach($data as $key=>$b){
-            if(config('breadcrumbs.first') === true) {
-                $breadcrumbs[$i]['link'] = $i == 0 ? $host : $breadcrumbs[$i - 1]['link'] . $key;
-                $breadcrumbs[$i]['title'] = $b;
-            }else{
-                if($i != 0) {
-                    $breadcrumbs[$i]['link'] = $i == 1 ? $host . $key : $breadcrumbs[$i - 1]['link'] . $key;
-                    $breadcrumbs[$i]['title'] = $b;
-                }
-            }
+
+            $breadcrumbs[$i]['link'] = $i == 0 ? $host . $key : $breadcrumbs[$i - 1]['link'] . $key;
+            $breadcrumbs[$i]['title'] = $b;
+            $breadcrumbs[$i]['class'] = '';
 
             $i++;
         }
 
-        if(empty($template) || !isset($template)){
-            $path = $this->dir . 'default.blade.php';
-            return view()->file($path, [
-                'data' => $breadcrumbs,
-                'separator_content' => config('breadcrumbs.separator.content'),
-                'separator_class' => config('breadcrumbs.separator.class')
-            ]);
-        }else{
-            $path = $this->dir . '/' . $template . '.blade.php';
-            return view()->file($path, [
-                'data' => $breadcrumbs,
-                'separator_content' => config('breadcrumbs.separator.content'),
-                'separator_class' => config('breadcrumbs.separator.class')
-            ]);
-        }
+
+        $path = $this->dir . '/' . $template . '.blade.php';
+        return view()->file($path, [
+            'data' => $breadcrumbs,
+            'separator' => config('breadcrumbs.separator'),
+        ]);
+
 
     }
 

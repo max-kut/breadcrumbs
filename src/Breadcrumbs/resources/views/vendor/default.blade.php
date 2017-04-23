@@ -1,10 +1,3 @@
-@if(!empty($separator_content) || !empty($separator_class))
-    <style>
-        ol.breadcrumb>li::before{
-            display:none;
-        }
-    </style>
-@endif
 
 <div id="breadcrumbs">
     <div class="row">
@@ -14,13 +7,15 @@
                 @foreach($data as $d)
 
                     @if($i != count($data))
-                        <li>
+                        <li class="{{$d['class']}}">
                             <a href="{{$d['link']}}">{!! $d['title'] !!}</a>
                         </li>
-                        <li class="separator {{$separator_class}}">{!! $separator_content !!}</li>
+                        @if($separator['enable'] === true)
+                            <li class="separator {{$separator['class']}}">{!! $separator['content'] !!}</li>
+                        @endif
                     @else
                         <li>
-                            <p>{!! $d['title'] !!}</p>
+                            <a class="active">{!! $d['title'] !!}</a>
                         </li>
                     @endif
 
