@@ -20,6 +20,9 @@ class BreadcrumbsServiceProvider extends ServiceProvider
         //Config
         $this->publishes([__DIR__ . '/config/' => config_path() . "/"], 'config');
 
+        //CSS
+        $this->publishes([__DIR__ . '/public/' => public_path() . "/"], 'assets');
+
         //Views
         $this->loadViewsFrom(__DIR__ . '/resources/views/vendor', 'breadcrumbs');
         $this->publishes([
