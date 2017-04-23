@@ -1,5 +1,5 @@
 {
-    "name": "GlissmediaTeam/Breadcrumbs",
+    "name": "glissmedia/breadcrumbs",
     "description": "Package Breadcrumbs for Laravel 5.4",
     "license": "MIT",
     "authors": [
@@ -12,7 +12,7 @@
         "classmap": [],
         "files": [],
         "psr-4": {
-            "GlissmediaTeam\\Breadcrumbs\\": "src/Breadcrumbs"
+            "Glissmedia\\Breadcrumbs\\": "src/Breadcrumbs"
         }
     }
 }
