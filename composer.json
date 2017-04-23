@@ -1,0 +1,18 @@
+{
+    "name": "GlissmediaTeam/Breadcrumbs",
+    "description": "Package Breadcrumbs for Laravel 5.4",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "GlissmediaTeam",
+            "email": "support@glissmedia.ru"
+        }
+    ],
+    "autoload": {
+        "classmap": [],
+        "files": [],
+        "psr-4": {
+            "GlissmediaTeam\\Breadcrumbs\\": "src/Breadcrumbs"
+        }
+    }
+}
