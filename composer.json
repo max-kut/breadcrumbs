@@ -1,11 +1,14 @@
 {
     "name": "glissmedia/breadcrumbs",
     "description": "Package Breadcrumbs for Laravel 5.4",
+    "keywords": ["laravel", "breadcrumbs"],
     "license": "MIT",
+    "homepage": "https://github.com/glissmedia/breadcrumbs",
     "authors": [
         {
             "name": "GlissmediaTeam",
-            "email": "support@glissmedia.ru"
+            "email": "support@glissmedia.ru",
+            "homepage": "http://glissmedia.ru"
         }
     ],
     "autoload": {
@@ -14,5 +17,12 @@
         "psr-4": {
             "Glissmedia\\Breadcrumbs\\": "src/Breadcrumbs"
         }
-    }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.4"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
