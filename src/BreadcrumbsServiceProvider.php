@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class BreadcrumbsServiceProvider extends ServiceProvider
 {
-
     public function register()
     {
         $this->app->singleton('breadcrumbs', function () {
@@ -16,7 +15,6 @@ class BreadcrumbsServiceProvider extends ServiceProvider
 
     public function boot()
     {
-
         //Config
         $this->publishes([__DIR__ . '/config/' => config_path() . "/"], 'config');
 
@@ -26,8 +24,7 @@ class BreadcrumbsServiceProvider extends ServiceProvider
         //Views
         $this->loadViewsFrom(__DIR__ . '/resources/views/vendor', 'breadcrumbs');
         $this->publishes([
-            __DIR__.'/resources/views/vendor' => resource_path('views/vendor/breadcrumbs'),
+            __DIR__ . '/resources/views/vendor' => resource_path('views/vendor/breadcrumbs'),
         ]);
     }
-
 }

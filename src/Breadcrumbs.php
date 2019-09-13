@@ -4,41 +4,50 @@ namespace Glissmedia\Breadcrumbs;
 
 use Illuminate\Support\Facades\Request;
 
-class Breadcrumbs {
+class Breadcrumbs
+{
 
     protected $dir;
 
+    /**
+     * Breadcrumbs constructor.
+     */
     public function __construct()
     {
-        $this->dir = realpath(base_path()) . '/resources/views/vendor/breadcrumbs/';
+        $this->dir = realpath(base_path('resources/views/vendor/breadcrumbs/'));
     }
 
     /* Render Breadcrumbs
      * @array data
      */
-    public function render($data=false, $path=false)
+    public function render($data = false, $path = false)
     {
-
-        if(empty($data)){return false;}
+        if (empty($data)) {
+            return false;
+        }
 
         $html = $this->getHtml($data, $path);
-        return $html;
 
+        return $html;
     }
 
-    protected function getHtml($data, $template=false)
+    /**
+     * @param $data
+     * @param bool $template
+     * @return mixed
+     */
+    protected function getHtml($data, $template = false)
     {
-
         $template = !empty($template)
             ? $template
             : config('breadcrumbs.template');
 
-        $host = Request::server('REQUEST_SCHEME') . '://' . Request::getHost();
+        $host = Request::getSchemeAndHttpHost();
 
-        $breadcrumbs = array();
+        $breadcrumbs = [];
 
         $i = 0;
-        if(config('breadcrumbs.first.enable') === true) {
+        if (config('breadcrumbs.first.enable') === true) {
             $breadcrumbs[0]['link'] = $host;
             $breadcrumbs[0]['title'] = !empty(config('breadcrumbs.first.content'))
                 ? config('breadcrumbs.first.content')
@@ -49,7 +58,7 @@ class Breadcrumbs {
             $i = 1;
         }
 
-        foreach($data as $key=>$b){
+        foreach ($data as $key => $b) {
 
             $breadcrumbs[$i]['link'] = $i == 0 ? $host . $key : $breadcrumbs[$i - 1]['link'] . $key;
             $breadcrumbs[$i]['title'] = $b;
@@ -59,34 +68,44 @@ class Breadcrumbs {
         }
 
         return $this->getTemplate($breadcrumbs, $template);
-
     }
 
 
-    public function generate($data=false, $path=false){
-
-        if(empty($data)){return false;}
+    /**
+     * @param bool $data
+     * @param bool $path
+     * @return bool|mixed
+     */
+    public function generate($data = false, $path = false)
+    {
+        if (empty($data)) {
+            return false;
+        }
 
         $html = $this->getHtmlGenerate($data, $path);
 
         return $html;
-
     }
 
-    protected function getHtmlGenerate($data, $template=false){
-
+    /**
+     * @param $data
+     * @param bool $template
+     * @return mixed
+     */
+    protected function getHtmlGenerate($data, $template = false)
+    {
         $template = !empty($template)
             ? $template
             : config('breadcrumbs.template');
 
-        $host = Request::server('REQUEST_SCHEME') . '://' . Request::getHost();
+        $host = Request::getSchemeAndHttpHost();
 
         $path = array_diff(explode('/', Request::getPathInfo()), [""]);
 
-        $breadcrumbs = array();
+        $breadcrumbs = [];
 
         $i = 0;
-        if(config('breadcrumbs.first.enable') === true) {
+        if (config('breadcrumbs.first.enable') === true) {
             $breadcrumbs[0]['link'] = $host;
             $breadcrumbs[0]['title'] = !empty(config('breadcrumbs.first.content'))
                 ? config('breadcrumbs.first.content')
@@ -97,9 +116,8 @@ class Breadcrumbs {
             $i = 1;
         }
 
-        foreach($data as $d){
-
-            if($d !== false) {
+        foreach ($data as $d) {
+            if ($d !== false) {
                 $breadcrumbs[$i]['link'] = $i == 0
                     ? $host . '/' . $path[$i]
                     : $breadcrumbs[$i - 1]['link'] . '/' . $path[$i];
@@ -108,21 +126,23 @@ class Breadcrumbs {
 
                 $i++;
             }
-
         }
 
         return $this->getTemplate($breadcrumbs, $template);
-
     }
 
-    protected function getTemplate($breadcrumbs, $template){
-
+    /**
+     * @param $breadcrumbs
+     * @param $template
+     * @return mixed
+     */
+    protected function getTemplate($breadcrumbs, $template)
+    {
         $path = $this->dir . '/' . $template . '.blade.php';
+
         return view()->file($path, [
-            'data' => $breadcrumbs,
+            'data'      => $breadcrumbs,
             'separator' => config('breadcrumbs.separator'),
         ]);
-
     }
-
 }
